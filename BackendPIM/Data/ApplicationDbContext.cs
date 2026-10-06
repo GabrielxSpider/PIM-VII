@@ -51,12 +51,12 @@ namespace BackendPIM.Data
                 {
                     Id = 1,
                     Email = "admin@conectalar.com",
-                    // Este código abaixo é um Hash real gerado pelo algoritmo do ASP.NET Core Identity
-                    SenhaHash = "AQAAAAIAAYagAAAAEKKBDx8uPrbBNKi6toBK2eumMj+lef4p1oQQf/vqFlir+c2Hmbn9BHnwrSycSI105w==",
+                    SenhaHash = "AQAAAAIAAYagAAAAEJwK6XQv+YqLhXpX8vM8rZw=",
                     Perfil = PerfilUsuario.Administrador,
-                    DataCriacao = dataFixa
+                    DataCriacao = dataFixa,
+                    Ativo = true
                 }
-            );
+              );
 
             // Serviços Iniciais
             modelBuilder.Entity<Servico>().HasData(
