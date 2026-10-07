@@ -46,6 +46,47 @@ public class ApiService
     return await response.Content.ReadFromJsonAsync<ServicoDto>();
 }
 
+public async Task<ServicoDto?> UpdateServicoAsync(
+    int id,
+    string titulo,
+    string descricao,
+    decimal precoBase,
+    string token)
+{
+    _httpClient.DefaultRequestHeaders.Authorization =
+        new AuthenticationHeaderValue("Bearer", token);
+
+    var response = await _httpClient.PutAsJsonAsync(
+        $"api/Servicos/{id}",
+        new
+        {
+            Titulo = titulo,
+            Descricao = descricao,
+            PrecoBase = precoBase
+        });
+
+    if (!response.IsSuccessStatusCode)
+    {
+        return null;
+    }
+
+    return await response.Content
+        .ReadFromJsonAsync<ServicoDto>();
+}
+
+public async Task<bool> DeleteServicoAsync(
+    int id,
+    string token)
+{
+    _httpClient.DefaultRequestHeaders.Authorization =
+        new AuthenticationHeaderValue("Bearer", token);
+
+    var response = await _httpClient.DeleteAsync(
+        $"api/Servicos/{id}");
+
+    return response.IsSuccessStatusCode;
+}
+
     public async Task<LoginResponseDto?> LoginAsync(
     string email,
     string senha)

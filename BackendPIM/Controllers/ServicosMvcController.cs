@@ -25,10 +25,89 @@ public class ServicosMvcController : Controller
     }
 
     [HttpPost]
-public async Task<IActionResult> Criar(
-    string Titulo,
-    string Descricao,
-    decimal PrecoBase)
+    public async Task<IActionResult> Criar(
+        string Titulo,
+        string Descricao,
+        decimal PrecoBase)
+    {
+        var token = HttpContext.Session.GetString("Token");
+
+        if (string.IsNullOrEmpty(token))
+        {
+            return RedirectToAction("Index", "Login");
+        }
+
+        var servico = await _apiService.CreateServicoAsync(
+            Titulo,
+            Descricao,
+            PrecoBase,
+            token
+        );
+
+        if (servico == null)
+        {
+            ViewBag.Erro = "Não foi possível cadastrar o serviço.";
+            return View();
+        }
+
+        return RedirectToAction(nameof(Index));
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> Editar(int id)
+    {
+        var servicos = await _apiService.GetServicosAsync();
+
+        var servico = servicos.FirstOrDefault(s => s.Id == id);
+
+        if (servico == null)
+        {
+            return NotFound();
+        }
+
+        return View(servico);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Editar(
+        int Id,
+        string Titulo,
+        string Descricao,
+        decimal PrecoBase)
+    {
+        var token = HttpContext.Session.GetString("Token");
+
+        if (string.IsNullOrEmpty(token))
+        {
+            return RedirectToAction("Index", "Login");
+        }
+
+        var servico = await _apiService.UpdateServicoAsync(
+            Id,
+            Titulo,
+            Descricao,
+            PrecoBase,
+            token
+        );
+
+        if (servico == null)
+        {
+            ViewBag.Erro = "Não foi possível atualizar o serviço.";
+
+            return View(new ServicoDto
+            {
+                Id = Id,
+                Titulo = Titulo,
+                Descricao = Descricao,
+                PrecoBase = PrecoBase
+            });
+        }
+
+        return RedirectToAction(nameof(Index));
+    }
+
+    [HttpPost]
+public async Task<IActionResult> Excluir(int id)
 {
     var token = HttpContext.Session.GetString("Token");
 
@@ -37,17 +116,14 @@ public async Task<IActionResult> Criar(
         return RedirectToAction("Index", "Login");
     }
 
-    var servico = await _apiService.CreateServicoAsync(
-        Titulo,
-        Descricao,
-        PrecoBase,
+    var sucesso = await _apiService.DeleteServicoAsync(
+        id,
         token
     );
 
-    if (servico == null)
+    if (!sucesso)
     {
-        ViewBag.Erro = "Não foi possível cadastrar o serviço.";
-        return View();
+        TempData["Erro"] = "Não foi possível excluir o serviço.";
     }
 
     return RedirectToAction(nameof(Index));

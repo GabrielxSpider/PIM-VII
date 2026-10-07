@@ -89,13 +89,19 @@
 
                                 <td>
                                     <div class="action-buttons">
-                                        <button class="btn-action edit">
-                                            Editar
-                                        </button>
+                                     <a
+                                        href="/ServicosMvc/Editar/@servico.Id"
+                                        class="btn-action edit">
+                                        Editar
+                                     </a>
 
-                                        <button class="btn-action delete">
+                                        <form method="post" action="/ServicosMvc/Excluir">
+                                        <input type="hidden" name="id" value="@servico.Id" />
+
+                                        <button type="submit" class="btn-action delete">
                                             Excluir
                                         </button>
+                                    </form>
                                     </div>
                                 </td>
                             </tr>
