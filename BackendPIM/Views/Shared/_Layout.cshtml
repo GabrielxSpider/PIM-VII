@@ -57,10 +57,11 @@
     <span>Relatos</span>
 </a>
 
-                <a href="#" class="nav-item">
-                    <span>◈</span>
-                    <span>Conteúdos</span>
-                </a>
+               <a href="/ConteudosDiversidadeMvc"
+   class="nav-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "ConteudosDiversidadeMvc" ? "active" : "")">
+    <span>◈</span>
+    <span>Conteúdos</span>
+</a>
 
             </nav>
 

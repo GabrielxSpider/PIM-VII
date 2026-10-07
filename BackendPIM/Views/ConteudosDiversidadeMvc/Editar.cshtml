@@ -1,0 +1,102 @@
+@model BackendPIM.Services.ConteudoAdminDto
+
+@{
+    ViewData["Title"] = "Editar conteúdo";
+}
+
+<div class="conteudo-form-page">
+
+    <div class="page-header">
+        <div>
+            <h2>Editar conteúdo</h2>
+            <p>Atualize as informações do conteúdo de diversidade.</p>
+        </div>
+    </div>
+
+    <div class="conteudo-form-card">
+
+        <form method="post"
+              action="/ConteudosDiversidadeMvc/Editar">
+
+            <input type="hidden"
+                   name="Id"
+                   value="@Model.Id" />
+
+            <div class="form-group">
+                <label for="Titulo">Título</label>
+
+                <input type="text"
+                       id="Titulo"
+                       name="Titulo"
+                       maxlength="150"
+                       value="@Model.Titulo"
+                       required />
+            </div>
+
+            <div class="form-group">
+                <label for="Descricao">Descrição</label>
+
+                <textarea id="Descricao"
+                          name="Descricao"
+                          maxlength="500"
+                          rows="4"
+                          required>@Model.Descricao</textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="Tipo">Tipo</label>
+
+                <select id="Tipo"
+                        name="Tipo"
+                        required>
+
+                    <option value="1" selected="@(Model.Tipo == "Artigo")">
+                        Artigo
+                    </option>
+
+                    <option value="2" selected="@(Model.Tipo == "Video")">
+                        Vídeo
+                    </option>
+
+                    <option value="3" selected="@(Model.Tipo == "TreinamentoCorporativo")">
+                        Treinamento Corporativo
+                    </option>
+
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="Conteudo">Conteúdo</label>
+
+                <textarea id="Conteudo"
+                          name="Conteudo"
+                          rows="10"
+                          required>@Model.Conteudo</textarea>
+            </div>
+
+            @if (ViewBag.Erro != null)
+            {
+                <div class="form-error">
+                    @ViewBag.Erro
+                </div>
+            }
+
+            <div class="form-actions">
+
+                <a href="/ConteudosDiversidadeMvc"
+                   class="btn-secondary">
+                    Cancelar
+                </a>
+
+                <button type="submit"
+                        class="btn-primary">
+                    Salvar alterações
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>

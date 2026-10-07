@@ -1,0 +1,152 @@
+@model List<BackendPIM.Services.ConteudoAdminDto>
+
+@{
+    ViewData["Title"] = "Conteúdos";
+}
+
+<div class="conteudos-page">
+
+    <div class="page-header">
+        <div>
+            <h2>Conteúdos</h2>
+            <p>Gerencie os conteúdos de diversidade da plataforma.</p>
+        </div>
+
+        <a href="/ConteudosDiversidadeMvc/Criar"
+           class="btn-primary">
+            + Novo conteúdo
+        </a>
+    </div>
+
+    <div class="dashboard-card">
+        <div class="dashboard-card-title">
+            Total de conteúdos
+        </div>
+
+        <div class="dashboard-card-value">
+            @Model.Count
+        </div>
+    </div>
+
+    <div class="conteudos-card">
+
+        <div class="table-header">
+            <div>
+                <h3>Lista de conteúdos</h3>
+                <span>
+                    Conteúdos cadastrados na plataforma
+                </span>
+            </div>
+
+            <div class="service-count">
+                @Model.Count
+            </div>
+        </div>
+
+        <div class="conteudos-table-wrapper">
+
+            <table class="conteudos-table">
+
+                <thead>
+                    <tr>
+                        <th>Título</th>
+                        <th>Descrição</th>
+                        <th>Tipo</th>
+                        <th>Data de publicação</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    @if (Model.Count == 0)
+                    {
+                        <tr>
+                            <td colspan="5" class="empty-state">
+
+                                <div class="empty-icon">
+                                    ◈
+                                </div>
+
+                                <strong>
+                                    Nenhum conteúdo encontrado
+                                </strong>
+
+                                <span>
+                                    Ainda não existem conteúdos cadastrados.
+                                </span>
+
+                            </td>
+                        </tr>
+                    }
+                    else
+                    {
+                        foreach (var conteudo in Model)
+                        {
+                            <tr>
+
+                                <td>
+                                    <strong>
+                                        @conteudo.Titulo
+                                    </strong>
+                                </td>
+
+                                <td>
+                                    <span class="conteudo-descricao">
+                                        @conteudo.Descricao
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <span class="tipo-badge">
+                                        @conteudo.Tipo
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <strong>
+                                        @conteudo.DataPublicacao.ToString("dd/MM/yyyy")
+                                    </strong>
+
+                                    <br />
+
+                                    <small style="color: #71717a;">
+                                        @conteudo.DataPublicacao.ToString("HH:mm")
+                                    </small>
+                                </td>
+
+                                <td>
+                                    <div class="conteudo-actions">
+
+                                        <a href="/ConteudosDiversidadeMvc/Editar/@conteudo.Id"
+                                           class="btn-action">
+                                            Editar
+                                        </a>
+
+                                        <form method="post"
+                                              action="/ConteudosDiversidadeMvc/Excluir/@conteudo.Id"
+                                              onsubmit="return confirm('Deseja realmente excluir este conteúdo?');">
+
+                                            <button type="submit"
+                                                    class="btn-action btn-action-danger">
+                                                Excluir
+                                            </button>
+
+                                        </form>
+
+                                    </div>
+                                </td>
+
+                            </tr>
+                        }
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
