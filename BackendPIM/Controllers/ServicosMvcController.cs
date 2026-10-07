@@ -1,8 +1,10 @@
+using BackendPIM.Filters;
 using BackendPIM.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BackendPIM.Controllers;
 
+[AdminAuthorizationFilter]
 public class ServicosMvcController : Controller
 {
     private readonly ApiService _apiService;

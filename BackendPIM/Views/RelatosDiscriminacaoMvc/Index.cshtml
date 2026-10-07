@@ -1,0 +1,196 @@
+@model List<BackendPIM.Services.RelatoAdminDto>
+
+@{
+    ViewData["Title"] = "Relatos";
+}
+
+<div class="relatos-page">
+
+    <div class="page-header">
+
+        <div>
+            <h2>Relatos</h2>
+
+            <p>
+                Visualize e acompanhe os relatos enviados na plataforma.
+            </p>
+        </div>
+
+    </div>
+
+
+    <div class="dashboard-card">
+
+        <div class="dashboard-card-title">
+            Total de relatos
+        </div>
+
+        <div class="dashboard-card-value">
+            @Model.Count
+        </div>
+
+    </div>
+
+
+    <div class="relatos-card">
+
+        <div class="table-header">
+
+            <div>
+                <h3>Lista de relatos</h3>
+
+                <span>
+                    Relatos registrados na plataforma
+                </span>
+            </div>
+
+            <div class="service-count">
+                @Model.Count
+            </div>
+
+        </div>
+
+
+        <div class="relatos-table-wrapper">
+
+            <table class="relatos-table">
+
+                <thead>
+
+                    <tr>
+                        <th>ID</th>
+                        <th>Descrição</th>
+                        <th>Data de envio</th>
+                        <th>Usuário</th>
+                        <th>Status</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    @if (Model.Count == 0)
+                    {
+                        <tr>
+
+                            <td colspan="5" class="empty-state">
+
+                                <div class="empty-icon">
+                                    !
+                                </div>
+
+                                <strong>
+                                    Nenhum relato encontrado
+                                </strong>
+
+                                <span>
+                                    Ainda não existem relatos registrados.
+                                </span>
+
+                            </td>
+
+                        </tr>
+                    }
+                    else
+                    {
+                        foreach (var relato in Model)
+                        {
+                            <tr>
+
+                                <td>
+                                    <strong>
+                                        #@relato.Id
+                                    </strong>
+                                </td>
+
+                                <td>
+                                    <span class="relato-descricao">
+                                        @relato.DescricaoFatos
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <strong>
+                                        @relato.DataEnvio.ToString("dd/MM/yyyy")
+                                    </strong>
+
+                                    <br />
+
+                                    <small style="color: #71717a;">
+                                        @relato.DataEnvio.ToString("HH:mm")
+                                    </small>
+                                </td>
+
+                                <td>
+                                    @if (relato.UsuarioId.HasValue)
+                                    {
+                                        <span>
+                                            Usuário #@relato.UsuarioId
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="relato-anonimo">
+                                            Anônimo
+                                        </span>
+                                    }
+                                </td>
+
+                               <td>
+    @{
+        var statusClass =
+            relato.Status.ToLower()
+                .Replace(" ", "-") switch
+        {
+            "recebido" => "status-recebido",
+            "emanalise" => "status-em-analise",
+            "resolvido" => "status-resolvido",
+            _ => ""
+        };
+    }
+
+    <form method="post"
+          action="/RelatosDiscriminacaoMvc/AtualizarStatus"
+          class="status-form">
+
+        <input type="hidden"
+               name="id"
+               value="@relato.Id" />
+
+        <select name="status"
+                class="status-select @statusClass"
+                onchange="this.form.submit()">
+
+            <option value="1"
+                    selected="@(relato.Status == "Recebido")">
+                Recebido
+            </option>
+
+            <option value="2"
+                    selected="@(relato.Status == "EmAnalise")">
+                Em análise
+            </option>
+
+            <option value="3"
+                    selected="@(relato.Status == "Resolvido")">
+                Resolvido
+            </option>
+
+        </select>
+
+    </form>
+</td>
+
+                            </tr>
+                        }
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>

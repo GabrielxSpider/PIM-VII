@@ -1,0 +1,142 @@
+@model List<BackendPIM.Services.ProfissionalDto>
+
+@{
+    ViewData["Title"] = "Profissionais";
+}
+
+<div class="profissionais-page">
+
+    <div class="page-header">
+
+        <div>
+            <h2>Profissionais</h2>
+
+            <p>
+                Visualize os profissionais cadastrados na plataforma.
+            </p>
+        </div>
+
+    </div>
+
+
+    <div class="dashboard-card">
+
+        <div class="dashboard-card-title">
+            Total de profissionais
+        </div>
+
+        <div class="dashboard-card-value">
+            @Model.Count
+        </div>
+
+    </div>
+
+
+    <div class="profissionais-card">
+
+        <div class="table-header">
+
+            <div>
+                <h3>Lista de profissionais</h3>
+
+                <span>
+                    Profissionais cadastrados na plataforma
+                </span>
+            </div>
+
+            <div class="service-count">
+                @Model.Count
+            </div>
+
+        </div>
+
+
+        <div class="profissionais-table-wrapper">
+
+            <table class="profissionais-table">
+
+                <thead>
+
+                    <tr>
+                        <th>Profissional</th>
+                        <th>Telefone</th>
+                        <th>Especialidade</th>
+                        <th>Disponibilidade</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    @if (Model.Count == 0)
+                    {
+                        <tr>
+
+                            <td colspan="4" class="empty-state">
+
+                                <div class="empty-icon">
+                                    ♙
+                                </div>
+
+                                <strong>
+                                    Nenhum profissional encontrado
+                                </strong>
+
+                                <span>
+                                    Ainda não existem profissionais cadastrados.
+                                </span>
+
+                            </td>
+
+                        </tr>
+                    }
+                    else
+                    {
+                        foreach (var profissional in Model)
+                        {
+                            <tr>
+
+                                <td>
+                                    <strong>
+                                        @profissional.Nome
+                                    </strong>
+                                </td>
+
+                                <td>
+                                    @profissional.Telefone
+                                </td>
+
+                                <td>
+                                    @profissional.Especialidade
+                                </td>
+
+                                <td>
+
+                                    @if (profissional.Disponivel)
+                                    {
+                                        <span class="status-badge status-disponivel">
+                                            Disponível
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="status-badge status-indisponivel">
+                                            Indisponível
+                                        </span>
+                                    }
+
+                                </td>
+
+                            </tr>
+                        }
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>

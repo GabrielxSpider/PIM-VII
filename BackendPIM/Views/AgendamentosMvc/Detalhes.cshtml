@@ -1,0 +1,205 @@
+@model BackendPIM.Services.AgendamentoAdminDto
+
+@{
+    ViewData["Title"] = "Detalhes do Agendamento";
+}
+
+<div class="agendamentos-page">
+
+    <div class="page-header">
+
+        <div>
+            <h2>Detalhes do agendamento</h2>
+
+            <p>
+                Visualize todas as informações deste agendamento.
+            </p>
+        </div>
+
+        <div>
+            <a href="/AgendamentosMvc" class="btn-secondary">
+                Voltar
+            </a>
+        </div>
+
+    </div>
+
+
+    <div class="agendamento-detalhes-grid">
+
+        <!-- CLIENTE -->
+
+        <div class="detalhes-card">
+
+            <div class="detalhes-card-header">
+                <h3>Cliente</h3>
+            </div>
+
+            <div class="detalhes-card-body">
+
+                <div class="detalhe-item">
+
+                    <span>Nome</span>
+
+                    <strong>
+                        @Model.Cliente.Nome
+                    </strong>
+
+                </div>
+
+                <div class="detalhe-item">
+
+                    <span>ID do cliente</span>
+
+                    <strong>
+                        #@Model.Cliente.ClienteId
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- PROFISSIONAL -->
+
+        <div class="detalhes-card">
+
+            <div class="detalhes-card-header">
+                <h3>Profissional</h3>
+            </div>
+
+            <div class="detalhes-card-body">
+
+                <div class="detalhe-item">
+
+                    <span>Nome</span>
+
+                    <strong>
+                        @Model.Profissional.Nome
+                    </strong>
+
+                </div>
+
+                <div class="detalhe-item">
+
+                    <span>Especialidade</span>
+
+                    <strong>
+                        @Model.Profissional.Especialidade
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- SERVIÇO -->
+
+        <div class="detalhes-card">
+
+            <div class="detalhes-card-header">
+                <h3>Serviço</h3>
+            </div>
+
+            <div class="detalhes-card-body">
+
+                <div class="detalhe-item">
+
+                    <span>Serviço contratado</span>
+
+                    <strong>
+                        @Model.Servico.Titulo
+                    </strong>
+
+                </div>
+
+                <div class="detalhe-item">
+
+                    <span>Valor</span>
+
+                    <strong>
+                        R$ @Model.Servico.PrecoBase.ToString("N2")
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- AGENDAMENTO -->
+
+        <div class="detalhes-card">
+
+            <div class="detalhes-card-header">
+                <h3>Agendamento</h3>
+            </div>
+
+            <div class="detalhes-card-body">
+
+                <div class="detalhe-item">
+
+                    <span>Data</span>
+
+                    <strong>
+                        @Model.DataHora.ToString("dd/MM/yyyy")
+                    </strong>
+
+                </div>
+
+                <div class="detalhe-item">
+
+                    <span>Horário</span>
+
+                    <strong>
+                        @Model.DataHora.ToString("HH:mm")
+                    </strong>
+
+                </div>
+
+                <div class="detalhe-item">
+
+                    <span>Status</span>
+
+                    @{
+                        var statusClass = Model.Status.ToLower() switch
+                        {
+                            "pendente" => "status-pendente",
+                            "aceito" => "status-aceito",
+                            "concluido" => "status-concluido",
+                            "concluído" => "status-concluido",
+                            "cancelado" => "status-cancelado",
+                            _ => ""
+                        };
+                    }
+
+                    <strong>
+                        <span class="status-badge @statusClass">
+                            @Model.Status
+                        </span>
+                    </strong>
+
+                </div>
+
+                <div class="detalhe-item">
+
+                    <span>Aceito pelo profissional</span>
+
+                    <strong>
+                        @(Model.AceitoPeloProfissional ? "Sim" : "Não")
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

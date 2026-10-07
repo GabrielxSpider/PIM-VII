@@ -20,6 +20,59 @@ public class ApiService
         return servicos ?? new List<ServicoDto>();
     }
 
+public async Task<List<ProfissionalDto>> GetProfissionaisAsync(string token)
+{
+    _httpClient.DefaultRequestHeaders.Authorization =
+        new AuthenticationHeaderValue("Bearer", token);
+
+    var profissionais = await _httpClient
+        .GetFromJsonAsync<List<ProfissionalDto>>("api/Profissionais");
+
+    return profissionais ?? new List<ProfissionalDto>();
+}
+
+public async Task<List<RelatoAdminDto>> GetRelatosAdminAsync(string token)
+{
+    _httpClient.DefaultRequestHeaders.Authorization =
+        new AuthenticationHeaderValue("Bearer", token);
+
+    var relatos = await _httpClient
+        .GetFromJsonAsync<List<RelatoAdminDto>>(
+            "api/RelatosDiscriminacao");
+
+    return relatos ?? new List<RelatoAdminDto>();
+}
+
+public async Task<bool> AtualizarStatusRelatoAsync(
+    int id,
+    int status,
+    string token)
+{
+    _httpClient.DefaultRequestHeaders.Authorization =
+        new AuthenticationHeaderValue("Bearer", token);
+
+    var response = await _httpClient.PutAsJsonAsync(
+        $"api/RelatosDiscriminacao/{id}/status",
+        new
+        {
+            Status = status
+        });
+
+    return response.IsSuccessStatusCode;
+}
+
+public async Task<List<AgendamentoAdminDto>> GetAgendamentosAdminAsync(string token)
+{
+    _httpClient.DefaultRequestHeaders.Authorization =
+        new AuthenticationHeaderValue("Bearer", token);
+
+    var agendamentos = await _httpClient
+        .GetFromJsonAsync<List<AgendamentoAdminDto>>(
+            "api/Agendamentos/admin");
+
+    return agendamentos ?? new List<AgendamentoAdminDto>();
+}
+
     public async Task<ServicoDto?> CreateServicoAsync(
     string titulo,
     string descricao,
@@ -124,4 +177,58 @@ public class LoginResponseDto
     public int UsuarioId { get; set; }
     public string Email { get; set; } = string.Empty;
     public string Perfil { get; set; } = string.Empty;
+}
+
+public class ProfissionalDto
+{
+    public int Id { get; set; }
+    public string Nome { get; set; } = string.Empty;
+    public string Telefone { get; set; } = string.Empty;
+    public string Especialidade { get; set; } = string.Empty;
+    public bool Disponivel { get; set; }
+}
+
+public class AgendamentoAdminDto
+{
+    public int Id { get; set; }
+    public DateTime DataHora { get; set; }
+    public string Status { get; set; } = string.Empty;
+    public bool AceitoPeloProfissional { get; set; }
+
+    public ClienteAgendamentoDto Cliente { get; set; } = new();
+    public ProfissionalAgendamentoDto Profissional { get; set; } = new();
+    public ServicoAgendamentoDto Servico { get; set; } = new();
+}
+
+public class ClienteAgendamentoDto
+{
+    public int ClienteId { get; set; }
+    public string Nome { get; set; } = string.Empty;
+}
+
+public class ProfissionalAgendamentoDto
+{
+    public int ProfissionalId { get; set; }
+    public string Nome { get; set; } = string.Empty;
+    public string Especialidade { get; set; } = string.Empty;
+}
+
+public class ServicoAgendamentoDto
+{
+    public int ServicoId { get; set; }
+    public string Titulo { get; set; } = string.Empty;
+    public decimal PrecoBase { get; set; }
+}
+
+public class RelatoAdminDto
+{
+    public int Id { get; set; }
+
+    public string DescricaoFatos { get; set; } = string.Empty;
+
+    public DateTime DataEnvio { get; set; }
+
+    public string Status { get; set; } = string.Empty;
+
+    public int? UsuarioId { get; set; }
 }

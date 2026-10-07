@@ -6,7 +6,7 @@
 
     <title>@ViewData["Title"] - ConectaLar</title>
 
-    <link rel="stylesheet" href="~/css/admin.css" />
+   <link rel="stylesheet" href="~/css/admin.css?v=3" />
 </head>
 
 <body>
@@ -39,20 +39,23 @@
                     <span>Serviços</span>
                 </a>
 
-                <a href="#" class="nav-item">
-                    <span>♙</span>
-                    <span>Profissionais</span>
+                 <a href="/ProfissionaisMvc"
+                    class="nav-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "ProfissionaisMvc" ? "active" : "")">
+                        <span>♙</span>
+                        <span>Profissionais</span>
                 </a>
 
-                <a href="#" class="nav-item">
-                    <span>▣</span>
-                    <span>Agendamentos</span>
+                <a href="/AgendamentosMvc"
+                    class="nav-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "AgendamentosMvc" ? "active" : "")">
+                        <span>▣</span>
+                        <span>Agendamentos</span>
                 </a>
 
-                <a href="#" class="nav-item">
-                    <span>!</span>
-                    <span>Relatos</span>
-                </a>
+               <a href="/RelatosDiscriminacaoMvc"
+   class="nav-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "RelatosDiscriminacaoMvc" ? "active" : "")">
+    <span>!</span>
+    <span>Relatos</span>
+</a>
 
                 <a href="#" class="nav-item">
                     <span>◈</span>
@@ -74,9 +77,11 @@
                     </div>
                 </div>
 
-                <a href="#" class="logout">
-                    Sair
-                </a>
+               <form method="post" action="/Logout">
+                    <button type="submit" class="logout">
+                        Sair
+                    </button>
+               </form>
 
             </div>
 
@@ -97,8 +102,7 @@
                 </div>
 
                 <div class="topbar-user">
-                    <span>Administrador</span>
-
+                    
                     <div class="user-avatar">
                         A
                     </div>

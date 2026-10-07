@@ -150,7 +150,48 @@ public class AgendamentosController : ControllerBase
 
         return Ok(agendamentos);
     }
+
+        [HttpGet("admin")]
+    [Authorize(Roles = "Administrador")]
+    public async Task<IActionResult> GetTodosAdmin()
+    {
+        var agendamentos = await _context.Agendamentos
+            .AsNoTracking()
+            .Select(a => new
+            {
+                a.Id,
+                a.DataHora,
+                Status = a.Status.ToString(),
+                a.AceitoPeloProfissional,
+
+                Cliente = new
+                {
+                    a.ClienteId,
+                    Nome = a.Cliente!.Nome
+                },
+
+                Profissional = new
+                {
+                    a.ProfissionalId,
+                    Nome = a.Profissional!.Nome,
+                    Especialidade = a.Profissional.Especialidade
+                },
+
+                Servico = new
+                {
+                    a.ServicoId,
+                    Titulo = a.Servico!.Titulo,
+                    PrecoBase = a.Servico.PrecoBase
+                }
+            })
+            .OrderBy(a => a.DataHora)
+            .ToListAsync();
+
+        return Ok(agendamentos);
+    }
+
     [HttpGet("{id:int}")]
+
     public async Task<IActionResult> GetPorId(int id)
     {
         var usuarioIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
