@@ -25,10 +25,15 @@ public async Task<IActionResult> Index()
 
     var servicos = await _apiService.GetServicosAsync();
     var profissionais = await _apiService.GetProfissionaisAsync(token);
-
+    var agendamentos = await _apiService.GetAgendamentosAdminAsync(token);
+    var relatos = await _apiService.GetRelatosAdminAsync(token);
+    var conteudos = await _apiService.GetConteudosAsync(token);
 
     ViewBag.TotalServicos = servicos.Count;
     ViewBag.TotalProfissionais = profissionais.Count;
+    ViewBag.TotalAgendamentos = agendamentos.Count;
+    ViewBag.TotalRelatos = relatos.Count;
+    ViewBag.TotalConteudos = conteudos.Count;
 
     return View();
 }
