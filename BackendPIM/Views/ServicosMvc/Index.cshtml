@@ -1,0 +1,110 @@
+@model List<BackendPIM.Services.ServicoDto>
+
+@{
+    ViewData["Title"] = "Serviços";
+}
+
+<div class="services-page">
+
+    <div class="page-header">
+        <div>
+            <h2>Serviços</h2>
+            <p>Gerencie os serviços disponíveis na plataforma ConectaLar.</p>
+        </div>
+
+        <a href="/ServicosMvc/Criar" class="btn-primary">
+             + Novo serviço
+        </a>
+    </div>
+
+    <div class="services-card">
+
+        <div class="table-header">
+            <div>
+                <h3>Serviços cadastrados</h3>
+                <span>Lista de serviços disponíveis</span>
+            </div>
+
+            <div class="service-count">
+                @(Model?.Count ?? 0) serviços
+            </div>
+        </div>
+
+        <div class="table-wrapper">
+            <table class="services-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Serviço</th>
+                        <th>Descrição</th>
+                        <th>Preço base</th>
+                        <th>Data de criação</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @if (Model == null || Model.Count == 0)
+                    {
+                        <tr>
+                            <td colspan="6" class="empty-state">
+                                <div class="empty-icon">⚙</div>
+                                <strong>Nenhum serviço encontrado</strong>
+                                <span>
+                                    Os serviços cadastrados aparecerão aqui.
+                                </span>
+                            </td>
+                        </tr>
+                    }
+                    else
+                    {
+                        @foreach (var servico in Model)
+                        {
+                            <tr>
+                                <td>
+                                    <span class="service-id">
+                                        #@servico.Id
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <strong>@servico.Titulo</strong>
+                                </td>
+
+                                <td>
+                                    <span class="description">
+                                        @servico.Descricao
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <strong>
+                                        @servico.PrecoBase.ToString("C")
+                                    </strong>
+                                </td>
+
+                                <td>
+                                    @servico.DataCriacao.ToString("dd/MM/yyyy")
+                                </td>
+
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="btn-action edit">
+                                            Editar
+                                        </button>
+
+                                        <button class="btn-action delete">
+                                            Excluir
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+</div>

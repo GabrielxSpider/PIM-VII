@@ -1,5 +1,6 @@
 using BackendPIM.Data;
 using BackendPIM.Models;
+using BackendPIM.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -13,7 +14,9 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlite(connectionString));
 
-builder.Services.AddControllers();
+builder.Services.AddControllersWithViews();
+
+builder.Services.AddSession();
 
 builder.Services.AddCors(options =>
 {
@@ -55,6 +58,11 @@ builder.Services.AddAuthorization();
 
 builder.Services.AddOpenApi();
 
+builder.Services.AddHttpClient<ApiService>(client =>
+{
+    client.BaseAddress = new Uri("http://localhost:5272/");
+});
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -64,11 +72,19 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseStaticFiles();
+
+app.UseSession();
+
 app.UseCors("ConectaLarPolicy");
 
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();

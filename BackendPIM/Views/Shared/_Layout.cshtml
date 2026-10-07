@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>@ViewData["Title"] - ConectaLar</title>
+
+    <link rel="stylesheet" href="~/css/admin.css" />
+</head>
+
+<body>
+
+    <div class="admin-layout">
+
+        <!-- MENU LATERAL -->
+        <aside class="sidebar">
+
+            <div class="sidebar-header">
+                <div class="logo">
+                    CL
+                </div>
+
+                <div>
+                    <h2>ConectaLar</h2>
+                    <span>Painel Administrativo</span>
+                </div>
+            </div>
+
+            <nav class="sidebar-nav">
+
+                <a href="/" class="nav-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "Home" ? "active" : "")">
+                    <span>⌂</span>
+                    <span>Dashboard</span>
+                  </a>
+
+                <a href="/ServicosMvc" class="nav-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "ServicosMvc" ? "active" : "")">
+                    <span>⚙</span>
+                    <span>Serviços</span>
+                </a>
+
+                <a href="#" class="nav-item">
+                    <span>♙</span>
+                    <span>Profissionais</span>
+                </a>
+
+                <a href="#" class="nav-item">
+                    <span>▣</span>
+                    <span>Agendamentos</span>
+                </a>
+
+                <a href="#" class="nav-item">
+                    <span>!</span>
+                    <span>Relatos</span>
+                </a>
+
+                <a href="#" class="nav-item">
+                    <span>◈</span>
+                    <span>Conteúdos</span>
+                </a>
+
+            </nav>
+
+            <div class="sidebar-footer">
+
+                <div class="admin-user">
+                    <div class="user-avatar">
+                        A
+                    </div>
+
+                    <div>
+                        <strong>Administrador</strong>
+                        <span>Admin</span>
+                    </div>
+                </div>
+
+                <a href="#" class="logout">
+                    Sair
+                </a>
+
+            </div>
+
+        </aside>
+
+
+        <!-- ÁREA PRINCIPAL -->
+        <main class="main-content">
+
+            <header class="topbar">
+
+                <div>
+                    <span class="breadcrumb">
+                        ConectaLar / @ViewData["Title"]
+                    </span>
+
+                    <h1>@ViewData["Title"]</h1>
+                </div>
+
+                <div class="topbar-user">
+                    <span>Administrador</span>
+
+                    <div class="user-avatar">
+                        A
+                    </div>
+                </div>
+
+            </header>
+
+
+            <section class="page-content">
+
+                @RenderBody()
+
+            </section>
+
+        </main>
+
+    </div>
+
+</body>
+</html>

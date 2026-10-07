@@ -3,6 +3,7 @@ using System;
 using BackendPIM.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BackendPIM.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20261006233502_CorrigirSenhaAdministrador")]
+    partial class CorrigirSenhaAdministrador
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "10.0.12");
@@ -320,7 +323,7 @@ namespace BackendPIM.Migrations
                             DataCriacao = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Email = "admin@conectalar.com",
                             Perfil = 3,
-                            SenhaHash = "AQAAAAIAAYagAAAAEDtwbNr98RTUpfrjz1whQxyKFH7RF4WDx4PjZPYzjY5+62MQ9AHNuR8WabZw/zygzw=="
+                            SenhaHash = "AQAAAAIAAYagAAAAEED0kY+0rJGk8SCL2GjwNAP88maisi2J3d9BN1EfYCo/X4iUvPjCxbkjFewSUM1uYA=="
                         });
                 });
 

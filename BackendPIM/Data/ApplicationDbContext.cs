@@ -46,18 +46,17 @@ namespace BackendPIM.Data
             var dataFixa = new DateTime(2026, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 
             // Usuário Administrador com um Hash de senha REAL e FIXO (Equivalente a 'admin123')
-            modelBuilder.Entity<Usuario>().HasData(
-                new Usuario
-                {
-                    Id = 1,
-                    Email = "admin@conectalar.com",
-                    SenhaHash = "AQAAAAIAAYagAAAAEJwK6XQv+YqLhXpX8vM8rZw=",
-                    Perfil = PerfilUsuario.Administrador,
-                    DataCriacao = dataFixa,
-                    Ativo = true
-                }
-              );
-
+      modelBuilder.Entity<Usuario>().HasData(
+    new Usuario
+    {
+        Id = 1,
+        Email = "admin@conectalar.com",
+        SenhaHash = "AQAAAAIAAYagAAAAEDtwbNr98RTUpfrjz1whQxyKFH7RF4WDx4PjZPYzjY5+62MQ9AHNuR8WabZw/zygzw==",
+        Perfil = PerfilUsuario.Administrador,
+        DataCriacao = dataFixa,
+        Ativo = true
+    }
+);
             // Serviços Iniciais
             modelBuilder.Entity<Servico>().HasData(
                 new Servico { Id = 1, Titulo = "Instalação de Chuveiro Elétrico", Descricao = "Troca e instalação segura de chuveiros residenciais.", PrecoBase = 120.00m, DataCriacao = dataFixa },
