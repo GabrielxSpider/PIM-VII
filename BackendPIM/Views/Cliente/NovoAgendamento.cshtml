@@ -1,0 +1,79 @@
+@{
+    ViewData["Title"] = "Novo Agendamento";
+}
+
+<div class="client-page">
+
+    <div class="client-page-header">
+        <h2>Novo Agendamento</h2>
+
+        <p>
+            Solicite um serviço escolhendo o profissional e o horário desejado.
+        </p>
+    </div>
+
+    <div class="client-form-card">
+
+        <form method="post">
+
+            <div class="client-form-group">
+                <label for="servico">Serviço</label>
+
+                <select id="servico" name="ServicoId">
+    <option value="">Selecione um serviço</option>
+
+    @foreach (var servico in ViewBag.Servicos)
+    {
+        <option value="@servico.Id">
+            @servico.Titulo - R$ @servico.PrecoBase
+        </option>
+    }
+</select>
+            </div>
+
+            <div class="client-form-group">
+                <label for="profissional">Profissional</label>
+
+               <select id="profissional" name="ProfissionalId">
+    <option value="">Selecione um profissional</option>
+
+    @foreach (var profissional in ViewBag.Profissionais)
+    {
+        <option value="@profissional.Id">
+            @profissional.Nome - @profissional.Especialidade
+        </option>
+    }
+</select>
+            </div>
+
+            <div class="client-form-row">
+
+                <div class="client-form-group">
+                    <label for="data">Data</label>
+
+                    <input
+                        type="date"
+                        id="data"
+                        name="Data" />
+                </div>
+
+                <div class="client-form-group">
+                    <label for="hora">Horário</label>
+
+                    <input
+                        type="time"
+                        id="hora"
+                        name="Hora" />
+                </div>
+
+            </div>
+
+            <button type="submit" class="client-primary-button">
+                Solicitar Agendamento
+            </button>
+
+        </form>
+
+    </div>
+
+</div>

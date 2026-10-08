@@ -1,0 +1,81 @@
+@model List<BackendPIM.Services.RelatoClienteDto>
+
+@{
+    ViewData["Title"] = "Meus Relatos";
+}
+
+<div class="client-page">
+
+    <div class="client-page-header">
+        <h2>Meus Relatos</h2>
+
+        <p>
+            Acompanhe os relatos enviados por você.
+        </p>
+    </div>
+
+    @if (TempData["Sucesso"] != null)
+{
+    <div class="client-feedback client-feedback-success">
+        @TempData["Sucesso"]
+    </div>
+}
+
+@if (TempData["Erro"] != null)
+{
+    <div class="client-feedback client-feedback-error">
+        @TempData["Erro"]
+    </div>
+}
+
+    @if (!Model.Any())
+    {
+        <div class="client-empty">
+
+            <h3>Nenhum relato encontrado</h3>
+
+            <p>
+                Você ainda não possui relatos enviados.
+            </p>
+
+        </div>
+    }
+    else
+    {
+        <div class="client-reports">
+
+            @foreach (var relato in Model)
+            {
+                <div class="client-report-card">
+
+                    <div class="client-report-header">
+
+                        <div>
+                            <span>Relato #@relato.Id</span>
+
+                            <strong>
+                                @relato.DataEnvio.ToString("dd/MM/yyyy HH:mm")
+                            </strong>
+                        </div>
+
+                        <span class="client-report-status">
+                            @relato.Status
+                        </span>
+
+                    </div>
+
+                    <div class="client-report-description">
+                        <span>Descrição</span>
+
+                        <p>
+                            @relato.DescricaoFatos
+                        </p>
+                    </div>
+
+                </div>
+            }
+
+        </div>
+    }
+
+</div>

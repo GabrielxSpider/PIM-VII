@@ -1,0 +1,82 @@
+@{
+    ViewData["Title"] = "Novo serviço";
+}
+
+<div class="services-page">
+
+    <div class="page-header">
+        <div>
+            <h2>Novo serviço</h2>
+            <p>Cadastre um novo serviço para a plataforma ConectaLar.</p>
+        </div>
+
+        <a href="/ServicosMvc" class="btn-secondary">
+            ← Voltar
+        </a>
+    </div>
+
+    <div class="form-card">
+
+        <div class="form-card-header">
+            <h3>Informações do serviço</h3>
+            <span>Preencha os dados abaixo</span>
+        </div>
+
+        <form method="post" action="/ServicosMvc/Criar" class="service-form">
+
+            <div class="form-group">
+                <label for="titulo">Título do serviço</label>
+
+                <input
+                    type="text"
+                    id="titulo"
+                    name="Titulo"
+                    placeholder="Ex: Instalação Elétrica"
+                    required />
+            </div>
+
+            <div class="form-group">
+                <label for="descricao">Descrição</label>
+
+                <textarea
+                    id="descricao"
+                    name="Descricao"
+                    rows="5"
+                    placeholder="Descreva o serviço oferecido..."
+                    required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="preco">Preço base</label>
+
+                <div class="price-input">
+                    <span>R$</span>
+
+                    <input
+                        type="number"
+                        id="preco"
+                        name="PrecoBase"
+                        step="0.01"
+                        min="0"
+                        placeholder="0,00"
+                        required />
+                </div>
+            </div>
+
+            <div class="form-actions">
+
+                <a href="/ServicosMvc" class="btn-secondary">
+                    Cancelar
+                </a>
+
+                <button type="submit" class="btn-primary">
+                    Salvar serviço
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>

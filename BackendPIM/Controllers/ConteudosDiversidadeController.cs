@@ -84,39 +84,55 @@ public class ConteudosDiversidadeController : ControllerBase
 
         await _context.SaveChangesAsync();
 
-        return CreatedAtAction(
-            nameof(GetPorId),
-            new { id = conteudo.Id },
-            conteudo
-        );
-    }
-
-    [Authorize(Roles = "Administrador")]
-    [HttpPut("{id:int}")]
-    public async Task<IActionResult> Atualizar(
-        int id,
-        CriarConteudoDiversidadeRequest request)
+       return CreatedAtAction(
+    nameof(GetPorId),
+    new { id = conteudo.Id },
+    new
     {
-        var conteudo = await _context.ConteudosDiversidade
-            .FirstOrDefaultAsync(c => c.Id == id);
-
-        if (conteudo == null)
-        {
-            return NotFound(new
-            {
-                mensagem = "Conteúdo não encontrado."
-            });
-        }
-
-        conteudo.Titulo = request.Titulo;
-        conteudo.Descricao = request.Descricao;
-        conteudo.Tipo = request.Tipo;
-        conteudo.Conteudo = request.Conteudo;
-
-        await _context.SaveChangesAsync();
-
-        return Ok(conteudo);
+        conteudo.Id,
+        conteudo.Titulo,
+        conteudo.Descricao,
+        Tipo = conteudo.Tipo.ToString(),
+        conteudo.Conteudo,
+        conteudo.DataPublicacao
     }
+);
+    }
+
+   [Authorize(Roles = "Administrador")]
+[HttpPut("{id:int}")]
+public async Task<IActionResult> Atualizar(
+    int id,
+    CriarConteudoDiversidadeRequest request)
+{
+    var conteudo = await _context.ConteudosDiversidade
+        .FirstOrDefaultAsync(c => c.Id == id);
+
+    if (conteudo == null)
+    {
+        return NotFound(new
+        {
+            mensagem = "Conteúdo não encontrado."
+        });
+    }
+
+    conteudo.Titulo = request.Titulo;
+    conteudo.Descricao = request.Descricao;
+    conteudo.Tipo = request.Tipo;
+    conteudo.Conteudo = request.Conteudo;
+
+    await _context.SaveChangesAsync();
+
+    return Ok(new
+    {
+        conteudo.Id,
+        conteudo.Titulo,
+        conteudo.Descricao,
+        Tipo = conteudo.Tipo.ToString(),
+        conteudo.Conteudo,
+        conteudo.DataPublicacao
+    });
+}
 
     [Authorize(Roles = "Administrador")]
     [HttpDelete("{id:int}")]

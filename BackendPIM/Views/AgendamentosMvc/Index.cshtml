@@ -1,0 +1,136 @@
+@model List<BackendPIM.Services.AgendamentoAdminDto>
+
+@{
+    ViewData["Title"] = "Agendamentos";
+}
+
+<div class="agendamentos-page">
+    <div class="page-header">
+        <div>
+            <h2>Agendamentos</h2>
+            <p>Visualize e acompanhe os agendamentos realizados na plataforma.</p>
+        </div>
+    </div>
+
+    <div class="dashboard-card">
+        <div class="dashboard-card-title">Total de agendamentos</div>
+        <div class="dashboard-card-value">@Model.Count</div>
+    </div>
+
+    <div class="agendamentos-card">
+        <div class="table-header">
+            <div>
+                <h3>Lista de agendamentos</h3>
+                <span>Agendamentos registrados na plataforma</span>
+            </div>
+            <div class="service-count">@Model.Count</div>
+        </div>
+
+        <div class="agendamentos-filtros">
+            <button type="button" class="filtro-status active" data-status="todos">Todos</button>
+            <button type="button" class="filtro-status" data-status="pendente">Pendentes</button>
+            <button type="button" class="filtro-status" data-status="aceito">Aceitos</button>
+            <button type="button" class="filtro-status" data-status="concluido">Concluídos</button>
+            <button type="button" class="filtro-status" data-status="cancelado">Cancelados</button>
+        </div>
+
+        <div class="agendamentos-table-wrapper">
+            <table class="agendamentos-table">
+                <thead>
+                    <tr>
+                        <th>Cliente</th>
+                        <th>Profissional</th>
+                        <th>Serviço</th>
+                        <th>Data e hora</th>
+                        <th>Valor</th>
+                        <th>Status</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.Count == 0)
+                    {
+                        <tr>
+                            <td colspan="7" class="empty-state">
+                                <div class="empty-icon">▣</div>
+                                <strong>Nenhum agendamento encontrado</strong>
+                                <span>Ainda não existem agendamentos registrados.</span>
+                            </td>
+                        </tr>
+                    }
+                    else
+                    {
+                        foreach (var agendamento in Model)
+                        {
+                            <tr>
+                                <td>
+                                    <strong>@agendamento.Cliente.Nome</strong>
+                                </td>
+                                <td>
+                                    @agendamento.Profissional.Nome
+                                    <br />
+                                    <small style="color: #71717a;">@agendamento.Profissional.Especialidade</small>
+                                </td>
+                                <td>@agendamento.Servico.Titulo</td>
+                                <td>
+                                    <strong>@agendamento.DataHora.ToString("dd/MM/yyyy")</strong>
+                                    <br />
+                                    <small style="color: #71717a;">@agendamento.DataHora.ToString("HH:mm")</small>
+                                </td>
+                                <td>
+                                    <strong>R$ @agendamento.Servico.PrecoBase.ToString("N2")</strong>
+                                </td>
+                                <td>
+                                    @{
+                                        var statusClass = agendamento.Status.ToLower() switch
+                                        {
+                                            "pendente" => "status-pendente",
+                                            "aceito" => "status-aceito",
+                                            "concluido" or "concluído" => "status-concluido",
+                                            "cancelado" => "status-cancelado",
+                                            _ => ""
+                                        };
+                                    }
+                                    <span class="status-badge @statusClass">@agendamento.Status</span>
+                                </td>
+                                <td>
+                                    <a href="/AgendamentosMvc/Detalhes/@agendamento.Id" class="btn-action edit">
+                                        Ver detalhes
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    const botoesFiltro = document.querySelectorAll(".filtro-status");
+    const linhas = document.querySelectorAll(".agendamentos-table tbody tr");
+
+    botoesFiltro.forEach(botao => {
+        botao.addEventListener("click", () => {
+            const filtro = botao.dataset.status;
+
+            botoesFiltro.forEach(b => b.classList.remove("active"));
+            botao.classList.add("active");
+
+            linhas.forEach(linha => {
+                const badge = linha.querySelector(".status-badge");
+                if (!badge) return;
+
+                // Normaliza o texto removendo acentos para bater com o filtro ex: "concluído" -> "concluido"
+                const status = badge.textContent
+                    .trim()
+                    .toLowerCase()
+                    .normalize("NFD")
+                    .replace(/[\u0300-\u036f]/g, "");
+
+                linha.style.display = (filtro === "todos" || status === filtro) ? "" : "none";
+            });
+        });
+    });
+</script>

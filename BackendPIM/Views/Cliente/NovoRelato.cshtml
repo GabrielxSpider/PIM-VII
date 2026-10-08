@@ -1,0 +1,73 @@
+@{
+    ViewData["Title"] = "Novo Relato";
+}
+
+<div class="client-page">
+
+    <div class="client-page-header">
+        <h2>Novo Relato</h2>
+
+        <p>
+            Registre um relato de forma segura e responsável.
+        </p>
+    </div>
+
+    @if (ViewBag.Erro != null)
+    {
+        <div class="client-feedback client-feedback-error">
+            @ViewBag.Erro
+        </div>
+    }
+
+    <div class="client-form-card">
+
+        <form method="post">
+
+            <div class="client-form-group">
+
+                <label for="descricaoFatos">
+                    Descrição dos fatos
+                </label>
+
+                <textarea
+                    id="descricaoFatos"
+                    name="DescricaoFatos"
+                    maxlength="2000"
+                    rows="8"
+                    placeholder="Descreva o que aconteceu..."
+                    required></textarea>
+
+                <span class="client-form-help">
+                    Máximo de 2000 caracteres.
+                </span>
+
+            </div>
+
+            <div class="client-report-anonymous">
+
+                <label>
+                    <input
+                        type="checkbox"
+                        name="Anonimo"
+                        value="true" />
+
+                    Enviar relato anonimamente
+                </label>
+
+                <p>
+                    Quando selecionado, sua identificação não será vinculada ao relato.
+                </p>
+
+            </div>
+
+            <button
+                type="submit"
+                class="client-primary-button">
+                Enviar relato
+            </button>
+
+        </form>
+
+    </div>
+
+</div>

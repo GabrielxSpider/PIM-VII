@@ -1,0 +1,222 @@
+@model List<BackendPIM.Services.AgendamentoAdminDto>
+
+@{
+    ViewData["Title"] = "Meus Agendamentos";
+}
+
+<div class="professional-page">
+
+    <div class="professional-page-header">
+        <h2>Meus Agendamentos</h2>
+        <p>Visualize os serviços destinados a você.</p>
+    </div>
+
+    <div class="professional-summary">
+
+        <div class="professional-summary-card">
+            <span>Total</span>
+            <strong>@Model.Count</strong>
+        </div>
+
+        <div class="professional-summary-card">
+            <span>Pendentes</span>
+            <strong>@Model.Count(a => a.Status == "Pendente")</strong>
+        </div>
+
+        <div class="professional-summary-card">
+            <span>Confirmados</span>
+            <strong>@Model.Count(a => a.Status == "Confirmado")</strong>
+        </div>
+
+        <div class="professional-summary-card">
+            <span>Concluídos</span>
+            <strong>@Model.Count(a => a.Status == "Concluido")</strong>
+        </div>
+
+        <div class="professional-summary-card">
+            <span>Cancelados</span>
+            <strong>@Model.Count(a => a.Status == "Cancelado")</strong>
+        </div>
+
+    </div>
+
+    @if (TempData["Sucesso"] != null)
+    {
+        <div class="professional-feedback professional-feedback-success">
+            @TempData["Sucesso"]
+        </div>
+    }
+
+    @if (TempData["Erro"] != null)
+    {
+        <div class="professional-feedback professional-feedback-error">
+            @TempData["Erro"]
+        </div>
+    }
+
+    @if (!Model.Any())
+    {
+        <div class="professional-empty">
+
+            <h3>Nenhum agendamento encontrado</h3>
+
+            <p>
+                Você não possui agendamentos no momento.
+            </p>
+
+        </div>
+    }
+    else
+    {
+        <div class="professional-appointments">
+
+            @foreach (var agendamento in Model)
+            {
+                <div class="professional-appointment-card">
+
+                    <div class="professional-appointment-header">
+
+                        <div>
+                            <h3>
+                                @agendamento.Servico.Titulo
+                            </h3>
+
+                            <span>
+                                Cliente: @agendamento.Cliente.Nome
+                            </span>
+                        </div>
+
+                        @if (agendamento.Status == "Pendente")
+                        {
+                            <strong class="professional-status professional-status-pendente">
+                                Aguardando confirmação
+                            </strong>
+                        }
+                        else if (agendamento.Status == "Confirmado")
+                        {
+                            <strong class="professional-status professional-status-confirmado">
+                                Confirmado
+                            </strong>
+                        }
+                        else if (agendamento.Status == "Concluido")
+                        {
+                            <strong class="professional-status professional-status-concluido">
+                                Concluído
+                            </strong>
+                        }
+                        else if (agendamento.Status == "Cancelado")
+                        {
+                            <strong class="professional-status professional-status-cancelado">
+                                Cancelado
+                            </strong>
+                        }
+                        else
+                        {
+                            <strong class="professional-status">
+                                @agendamento.Status
+                            </strong>
+                        }
+
+                    </div>
+
+                    @if (agendamento.Status == "Pendente")
+                    {
+                        <p class="professional-status-message">
+                            Este agendamento aguarda sua confirmação.
+                        </p>
+                    }
+                    else if (agendamento.Status == "Confirmado")
+                    {
+                        <p class="professional-status-message">
+                            Você confirmou este atendimento.
+                        </p>
+                    }
+                    else if (agendamento.Status == "Concluido")
+                    {
+                        <p class="professional-status-message">
+                            Este atendimento foi concluído.
+                        </p>
+                    }
+                    else if (agendamento.Status == "Cancelado")
+                    {
+                        <p class="professional-status-message">
+                            Este agendamento foi cancelado ou recusado.
+                        </p>
+                    }
+
+                    <div class="professional-appointment-info">
+
+                        <div>
+                            <span>Data</span>
+
+                            <strong>
+                                @agendamento.DataHora.ToString("dd/MM/yyyy HH:mm")
+                            </strong>
+                        </div>
+
+                        <div>
+                            <span>Valor</span>
+
+                            <strong>
+                                R$ @agendamento.Servico.PrecoBase.ToString("N2")
+                            </strong>
+                        </div>
+
+                    </div>
+
+                    @if (agendamento.Status == "Pendente")
+                    {
+                        <form method="post"
+                              action="/Profissional/Aceitar">
+
+                            <input type="hidden"
+                                   name="id"
+                                   value="@agendamento.Id" />
+
+                            <button type="submit"
+                                    class="professional-accept-button">
+                                Aceitar agendamento
+                            </button>
+
+                        </form>
+
+                        <form method="post"
+                              action="/Profissional/Recusar"
+                              onsubmit="return confirm('Tem certeza que deseja recusar este agendamento?');">
+
+                            <input type="hidden"
+                                   name="id"
+                                   value="@agendamento.Id" />
+
+                            <button type="submit"
+                                    class="professional-danger-button">
+                                Recusar agendamento
+                            </button>
+
+                        </form>
+                    }
+
+                    @if (agendamento.Status == "Confirmado")
+                    {
+                        <form method="post"
+                              action="/Profissional/Concluir">
+
+                            <input type="hidden"
+                                   name="id"
+                                   value="@agendamento.Id" />
+
+                            <button type="submit"
+                                    class="professional-complete-button">
+                                Concluir atendimento
+                            </button>
+
+                        </form>
+                    }
+
+                </div>
+            }
+
+        </div>
+    }
+
+</div>

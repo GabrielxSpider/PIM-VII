@@ -1,0 +1,68 @@
+@model List<BackendPIM.Services.AgendamentoAdminDto>
+
+@{
+    ViewData["Title"] = "Início";
+
+    var pendentes = Model.Count(a => a.Status == "Pendente");
+    var confirmados = Model.Count(a => a.Status == "Confirmado");
+    var concluidos = Model.Count(a => a.Status == "Concluido");
+    var cancelados = Model.Count(a => a.Status == "Cancelado");
+}
+
+<div class="professional-page">
+
+    <div class="professional-page-header">
+        <h2>Bem-vindo ao ConectaLar</h2>
+
+        <p>
+            Acompanhe e gerencie os atendimentos destinados a você.
+        </p>
+    </div>
+
+    <div class="professional-summary">
+
+        <div class="professional-summary-card">
+            <span>Pendentes</span>
+            <strong>@pendentes</strong>
+        </div>
+
+        <div class="professional-summary-card">
+            <span>Confirmados</span>
+            <strong>@confirmados</strong>
+        </div>
+
+        <div class="professional-summary-card">
+            <span>Concluídos</span>
+            <strong>@concluidos</strong>
+        </div>
+
+        <div class="professional-summary-card">
+            <span>Cancelados</span>
+            <strong>@cancelados</strong>
+        </div>
+
+    </div>
+
+    <div class="professional-home-actions">
+
+        <div class="professional-home-action-card">
+
+            <div>
+                <h3>Meus Agendamentos</h3>
+
+                <p>
+                    Consulte os atendimentos destinados a você,
+                    aceite novas solicitações e conclua os serviços realizados.
+                </p>
+            </div>
+
+            <a href="/Profissional/Agendamentos"
+               class="professional-primary-button">
+                Ver agendamentos
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
