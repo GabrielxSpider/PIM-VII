@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>@ViewData["Title"] - ConectaLar</title>
+
+  <link rel="stylesheet" href="~/css/admin.css?v=8" />
+</head>
+
+<body>
+
+    <div class="client-layout">
+
+        <aside class="client-sidebar">
+
+            <div class="client-logo">
+                <strong>ConectaLar</strong>
+                <span>Área do Cliente</span>
+            </div>
+
+            <nav>
+                <a href="/Cliente">Início</a>
+                <a href="/Cliente/Agendamentos">Meus Agendamentos</a>
+                <a href="/Cliente/NovoAgendamento">Novo Agendamento</a>
+                <a href="/Cliente/Relatos">Meus Relatos</a>
+                <a href="/Cliente/NovoRelato">Novo Relato</a>
+            </nav>
+
+            <form method="post" action="/Logout" class="client-logout">
+                <button type="submit">Sair</button>
+            </form>
+
+        </aside>
+
+        <main class="client-content">
+
+            <header class="client-topbar">
+                <span>Área do Cliente</span>
+            </header>
+
+            <section class="client-main">
+                @RenderBody()
+            </section>
+
+        </main>
+
+    </div>
+
+</body>
+</html>

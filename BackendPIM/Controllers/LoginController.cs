@@ -38,6 +38,24 @@ HttpContext.Session.SetString("Token", resultado.Token);
 HttpContext.Session.SetString("Email", resultado.Email);
 HttpContext.Session.SetString("Perfil", resultado.Perfil);
 
-return RedirectToAction("Index", "Home");
+if (resultado.Perfil == "Administrador")
+{
+    return RedirectToAction("Index", "Home");
+}
+
+if (resultado.Perfil == "Cliente")
+{
+    return RedirectToAction("Index", "Cliente");
+}
+
+if (resultado.Perfil == "Profissional")
+{
+    return RedirectToAction("Index", "Profissional");
+}
+
+HttpContext.Session.Clear();
+
+ViewBag.Erro = "Perfil de usuário inválido.";
+return View();
     }
 }

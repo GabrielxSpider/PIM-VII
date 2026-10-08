@@ -44,6 +44,19 @@ public class ApiService
         return relatos ?? new List<RelatoAdminDto>();
     }
 
+    public async Task<List<RelatoClienteDto>> GetRelatosClienteAsync(
+    string token)
+{
+    _httpClient.DefaultRequestHeaders.Authorization =
+        new AuthenticationHeaderValue("Bearer", token);
+
+    var relatos = await _httpClient
+        .GetFromJsonAsync<List<RelatoClienteDto>>(
+            "api/RelatosDiscriminacao/meus");
+
+    return relatos ?? new List<RelatoClienteDto>();
+}
+
     public async Task<List<ConteudoAdminDto>> GetConteudosAsync(
         string token)
     {
@@ -162,6 +175,66 @@ public class ApiService
         return agendamentos ?? new List<AgendamentoAdminDto>();
     }
 
+    public async Task<List<AgendamentoAdminDto>> GetAgendamentosClienteAsync(string token)
+{
+    _httpClient.DefaultRequestHeaders.Authorization =
+        new AuthenticationHeaderValue("Bearer", token);
+
+    var agendamentos = await _httpClient
+        .GetFromJsonAsync<List<AgendamentoAdminDto>>(
+            "api/Agendamentos");
+
+    return agendamentos ?? new List<AgendamentoAdminDto>();
+}
+
+public async Task<List<AgendamentoAdminDto>> GetAgendamentosProfissionalAsync(
+    string token)
+{
+    _httpClient.DefaultRequestHeaders.Authorization =
+        new AuthenticationHeaderValue("Bearer", token);
+
+    var agendamentos = await _httpClient
+        .GetFromJsonAsync<List<AgendamentoAdminDto>>(
+            "api/Agendamentos/profissional");
+
+    return agendamentos ?? new List<AgendamentoAdminDto>();
+}
+
+public async Task<bool> CreateAgendamentoAsync(
+    int profissionalId,
+    int servicoId,
+    DateTime dataHora,
+    string token)
+{
+    _httpClient.DefaultRequestHeaders.Authorization =
+        new AuthenticationHeaderValue("Bearer", token);
+
+    var response = await _httpClient.PostAsJsonAsync(
+        "api/Agendamentos",
+        new
+        {
+            ProfissionalId = profissionalId,
+            ServicoId = servicoId,
+            DataHora = dataHora
+        });
+
+    return response.IsSuccessStatusCode;
+}
+
+public async Task<bool> CancelarAgendamentoAsync(
+    int id,
+    string token)
+{
+    _httpClient.DefaultRequestHeaders.Authorization =
+        new AuthenticationHeaderValue("Bearer", token);
+
+    var response = await _httpClient.PutAsync(
+        $"api/Agendamentos/{id}/cancelar",
+        null);
+
+    return response.IsSuccessStatusCode;
+}
+
     public async Task<ServicoDto?> CreateServicoAsync(
         string titulo,
         string descricao,
@@ -250,6 +323,67 @@ public class ApiService
         return await response.Content
             .ReadFromJsonAsync<LoginResponseDto>();
     }
+
+public async Task<bool> RecusarAgendamentoAsync(
+    int id,
+    string token)
+{
+    _httpClient.DefaultRequestHeaders.Authorization =
+        new AuthenticationHeaderValue("Bearer", token);
+
+    var response = await _httpClient.PutAsync(
+        $"api/Agendamentos/{id}/recusar",
+        null);
+
+    return response.IsSuccessStatusCode;
+}
+
+    public async Task<bool> AceitarAgendamentoAsync(
+    int id,
+    string token)
+{
+    _httpClient.DefaultRequestHeaders.Authorization =
+        new AuthenticationHeaderValue("Bearer", token);
+
+    var response = await _httpClient.PutAsync(
+        $"api/Agendamentos/{id}/aceitar",
+        null);
+
+    return response.IsSuccessStatusCode;
+}
+
+public async Task<bool> ConcluirAgendamentoAsync(
+    int id,
+    string token)
+{
+    _httpClient.DefaultRequestHeaders.Authorization =
+        new AuthenticationHeaderValue("Bearer", token);
+
+    var response = await _httpClient.PutAsync(
+        $"api/Agendamentos/{id}/concluir",
+        null);
+
+    return response.IsSuccessStatusCode;
+}
+
+public async Task<bool> CreateRelatoAsync(
+    string descricaoFatos,
+    bool anonimo,
+    string token)
+{
+    _httpClient.DefaultRequestHeaders.Authorization =
+        new AuthenticationHeaderValue("Bearer", token);
+
+    var response = await _httpClient.PostAsJsonAsync(
+        "api/RelatosDiscriminacao",
+        new
+        {
+            DescricaoFatos = descricaoFatos,
+            Anonimo = anonimo
+        });
+
+    return response.IsSuccessStatusCode;
+}
 }
 
 public class ServicoDto
@@ -357,4 +491,15 @@ public class ConteudoAdminDto
     public string Conteudo { get; set; } = string.Empty;
 
     public DateTime DataPublicacao { get; set; }
+}
+
+public class RelatoClienteDto
+{
+    public int Id { get; set; }
+
+    public string DescricaoFatos { get; set; } = string.Empty;
+
+    public DateTime DataEnvio { get; set; }
+
+    public string Status { get; set; } = string.Empty;
 }

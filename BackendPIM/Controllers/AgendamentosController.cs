@@ -442,4 +442,126 @@ public class AgendamentosController : ControllerBase
             agendamento.AceitoPeloProfissional
         });
     }
+
+    [HttpPut("{id:int}/cancelar")]
+[Authorize(Roles = "Cliente")]
+public async Task<IActionResult> Cancelar(int id)
+{
+    var usuarioIdString = User.FindFirstValue(
+        ClaimTypes.NameIdentifier
+    );
+
+    if (!int.TryParse(usuarioIdString, out var usuarioId))
+    {
+        return Unauthorized(new
+        {
+            mensagem = "Usuário não identificado."
+        });
+    }
+
+    var cliente = await _context.Clientes
+        .FirstOrDefaultAsync(c => c.UsuarioId == usuarioId);
+
+    if (cliente == null)
+    {
+        return NotFound(new
+        {
+            mensagem = "Cliente não encontrado."
+        });
+    }
+
+    var agendamento = await _context.Agendamentos
+        .FirstOrDefaultAsync(a =>
+            a.Id == id &&
+            a.ClienteId == cliente.Id);
+
+    if (agendamento == null)
+    {
+        return NotFound(new
+        {
+            mensagem = "Agendamento não encontrado."
+        });
+    }
+
+    if (agendamento.Status != StatusAgendamento.Pendente &&
+        agendamento.Status != StatusAgendamento.Confirmado)
+    {
+        return BadRequest(new
+        {
+            mensagem = "Este agendamento não pode ser cancelado."
+        });
+    }
+
+    agendamento.Status = StatusAgendamento.Cancelado;
+
+    await _context.SaveChangesAsync();
+
+    return Ok(new
+    {
+        mensagem = "Agendamento cancelado com sucesso.",
+        agendamento.Id,
+        Status = agendamento.Status.ToString()
+    });
+}
+
+[HttpPut("{id:int}/recusar")]
+[Authorize(Roles = "Profissional")]
+public async Task<IActionResult> Recusar(int id)
+{
+    var usuarioIdString = User.FindFirstValue(
+        ClaimTypes.NameIdentifier
+    );
+
+    if (!int.TryParse(usuarioIdString, out var usuarioId))
+    {
+        return Unauthorized(new
+        {
+            mensagem = "Usuário não identificado."
+        });
+    }
+
+    var profissional = await _context.Profissionais
+        .FirstOrDefaultAsync(p => p.UsuarioId == usuarioId);
+
+    if (profissional == null)
+    {
+        return NotFound(new
+        {
+            mensagem = "Profissional não encontrado."
+        });
+    }
+
+    var agendamento = await _context.Agendamentos
+        .FirstOrDefaultAsync(a =>
+            a.Id == id &&
+            a.ProfissionalId == profissional.Id);
+
+    if (agendamento == null)
+    {
+        return NotFound(new
+        {
+            mensagem = "Agendamento não encontrado."
+        });
+    }
+
+    if (agendamento.Status != StatusAgendamento.Pendente)
+    {
+        return BadRequest(new
+        {
+            mensagem =
+                "Somente agendamentos pendentes podem ser recusados."
+        });
+    }
+
+    agendamento.Status = StatusAgendamento.Cancelado;
+
+    await _context.SaveChangesAsync();
+
+    return Ok(new
+    {
+        mensagem = "Agendamento recusado com sucesso.",
+        agendamento.Id,
+        Status = agendamento.Status.ToString()
+    });
+}
 }

@@ -1,0 +1,76 @@
+@model List<BackendPIM.Services.AgendamentoAdminDto>
+
+@{
+    ViewData["Title"] = "Início";
+
+    var pendentes = Model.Count(a => a.Status == "Pendente");
+    var confirmados = Model.Count(a => a.Status == "Confirmado");
+    var concluidos = Model.Count(a => a.Status == "Concluido");
+}
+
+<div class="client-page">
+
+    <div class="client-page-header">
+        <h2>Bem-vindo ao ConectaLar</h2>
+
+        <p>
+            Acompanhe seus agendamentos e solicitações pela plataforma.
+        </p>
+    </div>
+
+    <div class="client-summary">
+
+        <div class="client-summary-card">
+            <span>Pendentes</span>
+            <strong>@pendentes</strong>
+        </div>
+
+        <div class="client-summary-card">
+            <span>Confirmados</span>
+            <strong>@confirmados</strong>
+        </div>
+
+        <div class="client-summary-card">
+            <span>Concluídos</span>
+            <strong>@concluidos</strong>
+        </div>
+
+    </div>
+
+    <div class="client-home-actions">
+
+        <div class="client-home-action-card">
+            <div>
+                <h3>Novo Agendamento</h3>
+
+                <p>
+                    Solicite um serviço escolhendo o profissional,
+                    a data e o horário desejado.
+                </p>
+            </div>
+
+            <a href="/Cliente/NovoAgendamento"
+               class="client-primary-button">
+                Solicitar serviço
+            </a>
+        </div>
+
+        <div class="client-home-action-card">
+            <div>
+                <h3>Meus Relatos</h3>
+
+                <p>
+                    Consulte os relatos enviados e acompanhe
+                    o status de cada solicitação.
+                </p>
+            </div>
+
+            <a href="/Cliente/Relatos"
+               class="client-secondary-button">
+                Ver meus relatos
+            </a>
+        </div>
+
+    </div>
+
+</div>
